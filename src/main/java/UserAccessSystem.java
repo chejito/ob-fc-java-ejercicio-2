@@ -16,15 +16,15 @@ public class UserAccessSystem {
      */
     public boolean register(String email, String password) {
         if (!email.equals("") && !password.equals("")) {
-            User userToLogin = null;
+            User storedUser = null;
 
             for (User user : users) {
                 if (user.getEmail().equals(email)) {
-                    userToLogin = user;
+                    storedUser = user;
                 }
             }
 
-            if (userToLogin == null) {
+            if (storedUser == null) {
                 int passwordHash = password.hashCode();
                 users.add(new User(email, passwordHash));
                 return true;
@@ -41,21 +41,20 @@ public class UserAccessSystem {
      * @return int -1 si el e-mail no existe, -2 si la contraseña es incorrecta y 1 si ambos son correctos.
      */
     public int login(String email, String password) {
-        User userToLogin = null;
+        User storedUser = null;
 
         for (User user : users) {
             if (user.getEmail().equals(email)) {
-                userToLogin = user;
+                storedUser = user;
             }
         }
 
-        if (userToLogin == null) {
+        if (storedUser == null) {
             return -1;
         }
 
-
         int hash = password.hashCode();
-        if (hash != userToLogin.getPasswordHash()) {
+        if (hash != storedUser.getPasswordHash()) {
             return -2;
         }
         return 1;
